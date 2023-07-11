@@ -6,7 +6,7 @@ using UnityEngine;
 public class CameraTransitions : MonoBehaviour
 {
     public GameObject player;
-    //private PlayerController playerContorller;
+    private PlayerController playerContorller;
 
     public GameObject cinemachine;
     public Vector3 cinemachineTargetPos;
@@ -24,19 +24,16 @@ public class CameraTransitions : MonoBehaviour
     }
 
 
-    // Update is called once per frame
-    void Update()
+    
+    void FixedUpdate()
     {
         
-        if (cameraColliders.enteredTransition == true)
+        Debug.Log(cameraColliders.enteredTransition);
+
+        if (cameraColliders.enteredTransition)
         {
             Debug.Log("entering camera transistion");
             MoveCamera();
-            if (Vector3.Distance(cinemachine.transform.position, cinemachineTargetPos) <= 0.5f)
-            {
-                cinemachine.transform.position = cinemachineTargetPos;
-                cameraColliders.enteredTransition = false;
-            }
         }
         if (cameraColliders.playerMovingToPosition)
         {
@@ -57,7 +54,11 @@ public class CameraTransitions : MonoBehaviour
         Vector3 movement = movementDirection * cameraMoveSpeed * Time.fixedDeltaTime;
         cinemachine.transform.position += movement;
 
-        
+        if(Vector3.Distance(cinemachine.transform.position, cinemachineTargetPos) <= 0.5f)
+        {
+            cinemachine.transform.position = cinemachineTargetPos;
+            cameraColliders.enteredTransition = false;
+        }
     }
 
     public void MovePlayer()
