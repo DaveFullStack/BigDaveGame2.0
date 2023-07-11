@@ -6,7 +6,7 @@ using UnityEngine;
 public class CameraTransitions : MonoBehaviour
 {
     public GameObject player;
-    private PlayerController playerContorller;
+    private PlayerController playerController;
 
     public GameObject cinemachine;
     public Vector3 cinemachineTargetPos;
@@ -21,7 +21,7 @@ public class CameraTransitions : MonoBehaviour
 
     private void Start()
     {
-        //playerContorller = FindObjectOfType<PlayerController>();
+        playerController = FindObjectOfType<PlayerController>();
         cameraColliders = FindObjectOfType<CameraTransitionColliders>();
     }
 
@@ -37,6 +37,7 @@ public class CameraTransitions : MonoBehaviour
             Debug.Log("entering camera transistion");
             MoveCamera();
             
+            
         }
     }
 
@@ -44,6 +45,7 @@ public class CameraTransitions : MonoBehaviour
 
     public void MoveCamera()
     {
+        playerController.canControlMovement = false;
         Vector3 movementDirection = (cinemachineTargetPos - cinemachine.transform.position).normalized;
         Vector3 movement = movementDirection * cameraMoveSpeed * Time.fixedDeltaTime;
         cinemachine.transform.position += movement;
@@ -54,12 +56,14 @@ public class CameraTransitions : MonoBehaviour
             enteredTransition = false;
             cameraColliders.enteredTransition = false;
             cameraColliders.playerMovingToPosition = false;
+            playerController.canControlMovement = true;
         }
         MovePlayer();
     }
 
     public void MovePlayer()
     {
+        
         Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
         Animator playerAnimator = player.GetComponent<Animator>();
         playerAnimator.SetBool("isMoving", true);
@@ -67,10 +71,13 @@ public class CameraTransitions : MonoBehaviour
         Vector2 moveDirection = (playerTargetPos - playerRB.position).normalized;
         Vector2 movement = moveDirection * playerMoveSpeedTransition * Time.fixedDeltaTime;
         playerRB.position += movement;
+
         if (Vector2.Distance(playerRB.position, playerTargetPos) <= 0.1f)
         {
+            
             playerRB.position = playerTargetPos;
             playerAnimator.SetBool("isMoving", false);
+            
             
         }
     }
