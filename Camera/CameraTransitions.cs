@@ -6,21 +6,21 @@ using UnityEngine;
 public class CameraTransitions : MonoBehaviour
 {
 
-    public GameObject cinemachinePos;
-    public Vector2 cinemachineTargetPos;
+    public GameObject cinemachine;
+    public Vector3 cinemachineTargetPos;
     
-
-    
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(cinemachine.transform.position != cinemachineTargetPos)
+        {
+            MoveCamera();
+        }
+    }
+
+    public void MoveCamera()
+    {
+        cinemachine.transform.position = cinemachineTargetPos;
     }
 }

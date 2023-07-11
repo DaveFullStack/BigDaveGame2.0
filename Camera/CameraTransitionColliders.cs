@@ -4,14 +4,27 @@ using UnityEngine;
 
 public class CameraTransitionColliders : MonoBehaviour
 {
-    public Vector2 cinemachineTargetPos;
-    public CameraTransitions cameraTransitions;
+    private CameraTransitions cameraTransitions;
+    public Vector3 cinemachineTargetPos;
+    
+
+    private bool enteredTransition;
+
+    private void Start()
+    {
+        cameraTransitions = FindObjectOfType<CameraTransitions>();
+        enteredTransition = false;
+    }
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if(!enteredTransition)
         {
-            cameraTransitions.cinemachineTargetPos = cinemachineTargetPos;
+            if (collision.CompareTag("Player"))
+            {
+                enteredTransition = true;
+                cameraTransitions.cinemachineTargetPos = cinemachineTargetPos;
+            }
         }
     }
 }
