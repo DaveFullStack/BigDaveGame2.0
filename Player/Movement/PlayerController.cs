@@ -20,7 +20,9 @@ public class PlayerController : MonoBehaviour
     
     private void FixedUpdate()
     {
-        _rb.position = (moveDirection * moveSpeed * Time.fixedDeltaTime);
+        
+        Vector2 movement = (moveDirection * moveSpeed * Time.fixedDeltaTime);
+        _rb.position += movement;
     }
 
     private void OnMove(InputValue value)
