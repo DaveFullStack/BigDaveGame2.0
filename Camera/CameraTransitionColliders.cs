@@ -20,17 +20,17 @@ public class CameraTransitionColliders : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if(!enteredTransition)
-        {
+        Debug.Log("hit line collider");
+        enteredTransition = true;
+
             if (collision.CompareTag("Player"))
             {
                 playerMovingToPosition = true;
-                enteredTransition = true;
                 cameraTransitions.cinemachineTargetPos = cinemachineTargetPos;
                 cameraTransitions.playerTargetPos = playerTargetPos;
             }
             
-        }
+        
         
     }
 }
