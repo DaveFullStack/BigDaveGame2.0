@@ -7,6 +7,8 @@ public class CameraTransitionColliders : MonoBehaviour
     private CameraTransitions cameraTransitions;
     public Vector3 cinemachineTargetPos;
     public Vector2 playerTargetPos;
+    public float assignMoveSpeedPlayer;
+    public float assignCameraMovementSpeed;
 
     public bool enteredTransition;
     public bool playerMovingToPosition;
@@ -29,6 +31,8 @@ public class CameraTransitionColliders : MonoBehaviour
             Debug.Log("hit edge collider");
             enteredTransition = true;
             cameraTransitions.enteredTransition = true;
+            cameraTransitions.playerMoveSpeedTransition = assignMoveSpeedPlayer;
+            cameraTransitions.cameraMoveSpeed = assignCameraMovementSpeed;
             Debug.Log("entered Transition bool is " + enteredTransition);
 
             if (collision.CompareTag("Player"))

@@ -23,22 +23,27 @@ public class CameraTransitions : MonoBehaviour
     {
         playerController = FindObjectOfType<PlayerController>();
         cameraColliders = FindObjectOfType<CameraTransitionColliders>();
+        enteredTransition = false;
     }
 
 
     
     void FixedUpdate()
     {
-        
-        //Debug.Log(cameraColliders.enteredTransition);
 
-        if (cinemachine.transform.position != cinemachineTargetPos)
+        if (enteredTransition)
         {
-            Debug.Log("entering camera transistion");
-            MoveCamera();
-            
-            
+            if (cinemachine.transform.position != cinemachineTargetPos)
+            {
+                Debug.Log("entering camera transistion");
+                MoveCamera();
+
+
+            }
+
         }
+
+        
     }
 
 
