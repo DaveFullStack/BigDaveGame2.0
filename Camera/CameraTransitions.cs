@@ -82,8 +82,7 @@ public class CameraTransitions : MonoBehaviour
             
             playerRB.position = playerTargetPos;
             playerAnimator.SetBool("isMoving", false);
-            
-            
+       
         }
     }
 }

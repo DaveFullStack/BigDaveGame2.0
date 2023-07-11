@@ -37,10 +37,11 @@ public class PlayerController : MonoBehaviour
 
     private void OnMove(InputValue value)
     {
-        moveDirection = value.Get<Vector2>().normalized;
 
         if (canControlMovement)
         {
+            moveDirection = value.Get<Vector2>().normalized;
+
             if (moveDirection != Vector2.zero)
             {
                 isMoving = true;
