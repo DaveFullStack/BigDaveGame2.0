@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        isMoving = false;
     }
 
     
@@ -40,11 +41,12 @@ public class PlayerController : MonoBehaviour
             isMoving = true;
             animator.SetFloat("x", moveDirection.x);
             animator.SetFloat("y", moveDirection.y);
-            animator.SetBool("isMoving", true);
+            animator.SetBool("isMoving", isMoving);
         }
         else
         {
-            animator.SetBool("isMoving", false);
+            isMoving = false;
+            animator.SetBool("isMoving", isMoving);
         }
     }
 
