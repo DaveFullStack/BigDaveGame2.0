@@ -17,6 +17,8 @@ public class CameraTransitions : MonoBehaviour
 
     private CameraTransitionColliders cameraColliders;
 
+    public bool enteredTransition;
+
     private void Start()
     {
         //playerContorller = FindObjectOfType<PlayerController>();
@@ -28,22 +30,14 @@ public class CameraTransitions : MonoBehaviour
     void FixedUpdate()
     {
         
-        Debug.Log(cameraColliders.enteredTransition);
+        //Debug.Log(cameraColliders.enteredTransition);
 
-        if (cameraColliders.enteredTransition)
+        if (cinemachine.transform.position != cinemachineTargetPos)
         {
             Debug.Log("entering camera transistion");
             MoveCamera();
+            
         }
-        if (cameraColliders.playerMovingToPosition)
-        {
-            if (player.GetComponent<Rigidbody2D>().position != playerTargetPos)
-            {
-                MovePlayer();
-                Debug.Log("MovingPlayer");
-            }
-        }
-
     }
 
 
@@ -57,13 +51,18 @@ public class CameraTransitions : MonoBehaviour
         if(Vector3.Distance(cinemachine.transform.position, cinemachineTargetPos) <= 0.5f)
         {
             cinemachine.transform.position = cinemachineTargetPos;
+            enteredTransition = false;
             cameraColliders.enteredTransition = false;
+            cameraColliders.playerMovingToPosition = false;
         }
+        MovePlayer();
     }
 
     public void MovePlayer()
     {
         Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
+        Animator playerAnimator = player.GetComponent<Animator>();
+        playerAnimator.SetBool("isMoving", true);
 
         Vector2 moveDirection = (playerTargetPos - playerRB.position).normalized;
         Vector2 movement = moveDirection * playerMoveSpeedTransition * Time.fixedDeltaTime;
@@ -71,7 +70,8 @@ public class CameraTransitions : MonoBehaviour
         if (Vector2.Distance(playerRB.position, playerTargetPos) <= 0.1f)
         {
             playerRB.position = playerTargetPos;
-            cameraColliders.playerMovingToPosition = false;
+            playerAnimator.SetBool("isMoving", false);
+            
         }
     }
 }

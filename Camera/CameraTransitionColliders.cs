@@ -20,36 +20,36 @@ public class CameraTransitionColliders : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if(enteredTransition)
+        if (cameraTransitions.enteredTransition == true)
         {
             return;
         }
-        else
+        else if (cameraTransitions.enteredTransition == false)
         {
-            Debug.Log("hit line collider");
+            Debug.Log("hit edge collider");
             enteredTransition = true;
+            cameraTransitions.enteredTransition = true;
             Debug.Log("entered Transition bool is " + enteredTransition);
 
             if (collision.CompareTag("Player"))
             {
                 playerMovingToPosition = true;
-                Debug.Log("player moving to position is " + playerMovingToPosition);
+                Debug.Log("player moving to position bool is " + playerMovingToPosition);
                 cameraTransitions.cinemachineTargetPos = cinemachineTargetPos;
                 cameraTransitions.playerTargetPos = playerTargetPos;
 
             }
         }
-        //Debug.Log("hit line collider");
-        //enteredTransition = true;
-        //Debug.Log("entered Transition bool is " + enteredTransition);
+        
+    }
+    public void OnTriggerExit2D(Collider2D collision)
+    {
+        Invoke("ChangeBools", 3f);
+    }
 
-        //if (collision.CompareTag("Player"))
-        //{
-        //    playerMovingToPosition = true;
-        //    Debug.Log("player moving to position is " + playerMovingToPosition);
-        //    cameraTransitions.cinemachineTargetPos = cinemachineTargetPos;
-        //    cameraTransitions.playerTargetPos = playerTargetPos;
-
-        //}
+    public void ChangeBools()
+    {
+        enteredTransition = false;
+        playerMovingToPosition = false;
     }
 }
