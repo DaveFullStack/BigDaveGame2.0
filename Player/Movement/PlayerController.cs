@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 moveDirection;
     private Animator animator;
     private bool isMoving;
+
+    public bool canControlMovement;
     
 
 
@@ -20,6 +22,7 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         isMoving = false;
+        canControlMovement = true;
     }
 
     
@@ -36,18 +39,22 @@ public class PlayerController : MonoBehaviour
     {
         moveDirection = value.Get<Vector2>().normalized;
 
-        if (moveDirection != Vector2.zero)
+        if (canControlMovement)
         {
-            isMoving = true;
-            animator.SetFloat("x", moveDirection.x);
-            animator.SetFloat("y", moveDirection.y);
-            animator.SetBool("isMoving", isMoving);
+            if (moveDirection != Vector2.zero)
+            {
+                isMoving = true;
+                animator.SetFloat("x", moveDirection.x);
+                animator.SetFloat("y", moveDirection.y);
+                animator.SetBool("isMoving", isMoving);
+            }
+            else
+            {
+                isMoving = false;
+                animator.SetBool("isMoving", isMoving);
+            }
         }
-        else
-        {
-            isMoving = false;
-            animator.SetBool("isMoving", isMoving);
-        }
+        
     }
 
     
