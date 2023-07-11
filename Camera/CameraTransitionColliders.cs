@@ -6,15 +6,16 @@ public class CameraTransitionColliders : MonoBehaviour
 {
     private CameraTransitions cameraTransitions;
     public Vector3 cinemachineTargetPos;
+    public Vector2 playerTargetPos;
 
-    
-
-    private bool enteredTransition;
+    public bool enteredTransition;
+    public bool playerMovingToPosition;
 
     private void Start()
     {
         cameraTransitions = FindObjectOfType<CameraTransitions>();
         enteredTransition = false;
+        playerMovingToPosition = false;
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
@@ -23,9 +24,13 @@ public class CameraTransitionColliders : MonoBehaviour
         {
             if (collision.CompareTag("Player"))
             {
+                playerMovingToPosition = true;
                 enteredTransition = true;
                 cameraTransitions.cinemachineTargetPos = cinemachineTargetPos;
+                cameraTransitions.playerTargetPos = playerTargetPos;
             }
+            
         }
+        
     }
 }
