@@ -6,6 +6,7 @@ public class CameraTransitionColliders : MonoBehaviour
 {
     private CameraTransitions cameraTransitions;
     public Vector3 cinemachineTargetPos;
+
     
 
     private bool enteredTransition;
