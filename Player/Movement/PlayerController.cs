@@ -10,11 +10,15 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D _rb;
     private Vector2 moveDirection;
+    private Animator animator;
+    private bool isMoving;
+    
 
 
     private void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     
@@ -22,11 +26,27 @@ public class PlayerController : MonoBehaviour
     {
         
         Vector2 movement = (moveDirection * moveSpeed * Time.fixedDeltaTime);
+        // creating vector2 to store variable for movement
         _rb.position += movement;
+        // using the rigidbody2d position and adding the movement variable to change the rigidbody2d position.
     }
 
     private void OnMove(InputValue value)
     {
         moveDirection = value.Get<Vector2>().normalized;
+
+        if (moveDirection != Vector2.zero)
+        {
+            isMoving = true;
+            animator.SetFloat("x", moveDirection.x);
+            animator.SetFloat("y", moveDirection.y);
+            animator.SetBool("isMoving", true);
+        }
+        else
+        {
+            animator.SetBool("isMoving", false);
+        }
     }
+
+    
 }
