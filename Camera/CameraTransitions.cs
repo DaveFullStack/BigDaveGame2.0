@@ -55,7 +55,7 @@ public class CameraTransitions : MonoBehaviour
         Vector3 movement = movementDirection * cameraMoveSpeed * Time.fixedDeltaTime;
         cinemachine.transform.position += movement;
 
-        if(Vector3.Distance(cinemachine.transform.position, cinemachineTargetPos) <= 0.5f)
+        if(Vector3.Distance(cinemachine.transform.position, cinemachineTargetPos) <= 0.1f)
         {
             cinemachine.transform.position = cinemachineTargetPos;
             enteredTransition = false;

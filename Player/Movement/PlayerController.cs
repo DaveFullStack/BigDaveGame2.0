@@ -33,6 +33,10 @@ public class PlayerController : MonoBehaviour
         // creating vector2 to store variable for movement
         _rb.position += movement;
         // using the rigidbody2d position and adding the movement variable to change the rigidbody2d position.
+        if (!canControlMovement)
+        {
+            moveDirection = Vector2.zero;
+        }
     }
 
     private void OnMove(InputValue value)
