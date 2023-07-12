@@ -10,6 +10,10 @@ public class FadeTransitionColliders : MonoBehaviour
     public Vector3 cinemachineTargetPosition;
     public Vector2 walkOffScreenTargetPos;
 
+    public Vector2 walkOnScreenStartPosition;
+    public Vector2 walkOnScreenTargetPosition;
+
+
 
     private void Start()
     {

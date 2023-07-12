@@ -52,16 +52,19 @@ public class FadeCameraTransition : MonoBehaviour
         Debug.Log($"Cinemachine Transform before movement is {cinemachineCameraPos.position.ToString()}");
         cinemachineCameraPos.position = fadeTransitionColliders.cinemachineTargetPosition;
         Debug.Log($"Cinemachine Transform position after movement is {cinemachineCameraPos.position.ToString()}");
+        
 
         
 
+        canvasAnimator.SetBool("StartFadeIn", false);
+        canvasAnimator.SetBool("StartFadeOut", true);
+
+        yield return new WaitForSeconds(canvasAnimator.GetCurrentAnimatorStateInfo(0).length);
+
+        PlayerWalkOnScreen();
 
 
-        //canvasAnimator.SetBool("StartFadeIn", false);
-        //canvasAnimator.SetBool("StartFadeOut", true);
-
-        
-
+        InTransition = false;
 
 
     }
@@ -69,10 +72,30 @@ public class FadeCameraTransition : MonoBehaviour
     private void PlayerWalkOffScreen()
     {
         Rigidbody2D playerRigidbody = player.GetComponent<Rigidbody2D>();
-        Vector2 moveDirection = playerRigidbody.position - fadeTransitionColliders.walkOffScreenTargetPos.normalized;
+        Vector2 moveDirection = (playerRigidbody.position + fadeTransitionColliders.walkOffScreenTargetPos).normalized;
         Vector2 movement = moveDirection * playerMoveSpeedInTransition * Time.fixedDeltaTime;
         playerRigidbody.position += movement;
 
+        if(Vector2.Distance(playerRigidbody.position, fadeTransitionColliders.walkOffScreenTargetPos) <= 1f)
+        {
+            playerRigidbody.position = fadeTransitionColliders.walkOffScreenTargetPos;
+        }
+    }
+
+    private void PlayerWalkOnScreen()
+    {
+        Rigidbody2D playerRigidbody = player.GetComponent<Rigidbody2D>();
+        playerRigidbody.position = fadeTransitionColliders.walkOnScreenStartPosition;
+
+        Vector2 moveDirection = (playerRigidbody.position + fadeTransitionColliders.walkOnScreenTargetPosition).normalized;
+        Debug.Log($"current move direction in PlayerWalkOnScreen is : {moveDirection.ToString()}");
+        Vector2 movement = moveDirection * playerMoveSpeedInTransition * Time.fixedDeltaTime;
+        playerRigidbody.position += movement;
+
+        //if (Vector2.Distance(fadeTransitionColliders.walkOnScreenTargetPosition, playerRigidbody.position) <= 0.1f)
+        //{
+        //    playerRigidbody.position = fadeTransitionColliders.walkOnScreenTargetPosition;
+        //}
     }
     
 
