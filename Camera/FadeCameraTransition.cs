@@ -17,10 +17,12 @@ public class FadeCameraTransition : MonoBehaviour
 
     private PlayerController playerController;
     private GameObject player;
+    private Animator playerAnimator;
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        playerAnimator = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
         fadeTransitionColliders = FindObjectOfType<FadeTransitionColliders>();
         playerController = FindObjectOfType<PlayerController>();
     }
@@ -30,73 +32,47 @@ public class FadeCameraTransition : MonoBehaviour
 
         if (InTransition)
         {
-            canvasToSetActive.SetActive(true);
-            canvasGroup.alpha = 0;
-            Debug.Log($"canvas to set active is {canvasToSetActive.activeInHierarchy}\n" +
-                $"canvasGroup alpha is {canvasGroup.alpha.ToString()}");
-
             StartCoroutine(PlayFadeTransition());
+        }
+        else
+        {
+            return;
         }
         
     }
 
     IEnumerator PlayFadeTransition()
     {
+        canvasToSetActive.SetActive(true);
+        canvasGroup.alpha = 0;
+        //Debug.Log($"canvas to set active is {canvasToSetActive.activeInHierarchy}\n" +
+        //$"canvasGroup alpha is {canvasGroup.alpha.ToString()}");
         playerController.canControlMovement = false;
+
         canvasAnimator.SetBool("StartFadeIn", true);
         Debug.Log($"canvasAnimator bool startFadeIn is {canvasAnimator.GetBool("StartFadeIn")}");
-        PlayerWalkOffScreen();
+
+        playerAnimator.SetBool("isMoving", false);
 
         yield return new WaitForSeconds(canvasAnimator.GetCurrentAnimatorStateInfo(0).length);
 
         Debug.Log($"Cinemachine Transform before movement is {cinemachineCameraPos.position.ToString()}");
         cinemachineCameraPos.position = fadeTransitionColliders.cinemachineTargetPosition;
         Debug.Log($"Cinemachine Transform position after movement is {cinemachineCameraPos.position.ToString()}");
-        
 
-        
+        player.GetComponent<Rigidbody2D>().position = fadeTransitionColliders.playerSpawnPosition;
 
+        yield return new WaitForSeconds(0.5f);
+        
         canvasAnimator.SetBool("StartFadeIn", false);
         canvasAnimator.SetBool("StartFadeOut", true);
 
-        yield return new WaitForSeconds(canvasAnimator.GetCurrentAnimatorStateInfo(0).length);
-
-        PlayerWalkOnScreen();
-
-
         InTransition = false;
-
+        playerController.canControlMovement = true;
 
     }
 
-    private void PlayerWalkOffScreen()
-    {
-        Rigidbody2D playerRigidbody = player.GetComponent<Rigidbody2D>();
-        Vector2 moveDirection = (playerRigidbody.position + fadeTransitionColliders.walkOffScreenTargetPos).normalized;
-        Vector2 movement = moveDirection * playerMoveSpeedInTransition * Time.fixedDeltaTime;
-        playerRigidbody.position += movement;
-
-        if(Vector2.Distance(playerRigidbody.position, fadeTransitionColliders.walkOffScreenTargetPos) <= 1f)
-        {
-            playerRigidbody.position = fadeTransitionColliders.walkOffScreenTargetPos;
-        }
-    }
-
-    private void PlayerWalkOnScreen()
-    {
-        Rigidbody2D playerRigidbody = player.GetComponent<Rigidbody2D>();
-        playerRigidbody.position = fadeTransitionColliders.walkOnScreenStartPosition;
-
-        Vector2 moveDirection = (playerRigidbody.position + fadeTransitionColliders.walkOnScreenTargetPosition).normalized;
-        Debug.Log($"current move direction in PlayerWalkOnScreen is : {moveDirection.ToString()}");
-        Vector2 movement = moveDirection * playerMoveSpeedInTransition * Time.fixedDeltaTime;
-        playerRigidbody.position += movement;
-
-        //if (Vector2.Distance(fadeTransitionColliders.walkOnScreenTargetPosition, playerRigidbody.position) <= 0.1f)
-        //{
-        //    playerRigidbody.position = fadeTransitionColliders.walkOnScreenTargetPosition;
-        //}
-    }
+    
     
 
     /* When InTransition Bool is True start Coroutine

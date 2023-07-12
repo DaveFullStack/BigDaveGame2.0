@@ -8,10 +8,8 @@ public class FadeTransitionColliders : MonoBehaviour
     //public GameObject canvasToSetActive;
 
     public Vector3 cinemachineTargetPosition;
-    public Vector2 walkOffScreenTargetPos;
-
-    public Vector2 walkOnScreenStartPosition;
-    public Vector2 walkOnScreenTargetPosition;
+    
+    public Vector2 playerSpawnPosition;
 
 
 
@@ -26,7 +24,7 @@ public class FadeTransitionColliders : MonoBehaviour
         {
             fadeCameraTransition.InTransition = true;
             //canvasToSetActive.SetActive(true);
-            Debug.Log($"inTransition bool is {fadeCameraTransition.InTransition}");
+            //Debug.Log($"inTransition bool is {fadeCameraTransition.InTransition}");
         }
         
         else
