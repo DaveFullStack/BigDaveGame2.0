@@ -7,6 +7,14 @@ public class FadeCameraTransition : MonoBehaviour
     public bool InTransition;
     public CanvasGroup canvasGroup;
     public GameObject canvasToSetActive;
+    public Animator canvasAnimator;
+
+    private FadeTransitionColliders fadeTransitionColliders;
+
+    private void Start()
+    {
+        fadeTransitionColliders = FindObjectOfType<FadeTransitionColliders>();
+    }
 
     private void Update()
     {
@@ -17,8 +25,25 @@ public class FadeCameraTransition : MonoBehaviour
             canvasGroup.alpha = 0;
             Debug.Log($"canvas to set active is {canvasToSetActive.activeInHierarchy}\n" +
                 $"canvasGroup alpha is {canvasGroup.alpha.ToString()}");
+
+            StartCoroutine(PlayFadeTransition());
         }
         
+    }
+
+    IEnumerator PlayFadeTransition()
+    {
+        canvasAnimator.SetBool("StartFadeIn", true);
+        Debug.Log($"canvasAnimator bool startFadeIn is {canvasAnimator.GetBool("StartFadeIn")}");
+        yield return new WaitForSeconds(canvasAnimator.GetCurrentAnimatorStateInfo(0).length);
+
+        canvasAnimator.SetBool("StartFadeIn", false);
+        canvasAnimator.SetBool("StartFadeOut", true);
+
+        
+
+
+
     }
 
     

@@ -7,6 +7,9 @@ public class FadeTransitionColliders : MonoBehaviour
     private FadeCameraTransition fadeCameraTransition;
     //public GameObject canvasToSetActive;
 
+    public Vector3 cinemachineTargetPosition;
+
+
     private void Start()
     {
         fadeCameraTransition = FindObjectOfType<FadeCameraTransition>();
