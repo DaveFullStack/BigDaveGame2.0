@@ -9,14 +9,23 @@ public class FadeCameraTransition : MonoBehaviour
     public GameObject canvasToSetActive;
     public Animator canvasAnimator;
 
+    public Transform cinemachineCameraPos;
+
+    public float playerMoveSpeedInTransition;
+
     private FadeTransitionColliders fadeTransitionColliders;
+
+    private PlayerController playerController;
+    private GameObject player;
 
     private void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         fadeTransitionColliders = FindObjectOfType<FadeTransitionColliders>();
+        playerController = FindObjectOfType<PlayerController>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
 
         if (InTransition)
@@ -33,12 +42,23 @@ public class FadeCameraTransition : MonoBehaviour
 
     IEnumerator PlayFadeTransition()
     {
+        playerController.canControlMovement = false;
         canvasAnimator.SetBool("StartFadeIn", true);
         Debug.Log($"canvasAnimator bool startFadeIn is {canvasAnimator.GetBool("StartFadeIn")}");
+        PlayerWalkOffScreen();
+
         yield return new WaitForSeconds(canvasAnimator.GetCurrentAnimatorStateInfo(0).length);
 
-        canvasAnimator.SetBool("StartFadeIn", false);
-        canvasAnimator.SetBool("StartFadeOut", true);
+        Debug.Log($"Cinemachine Transform before movement is {cinemachineCameraPos.position.ToString()}");
+        cinemachineCameraPos.position = fadeTransitionColliders.cinemachineTargetPosition;
+        Debug.Log($"Cinemachine Transform position after movement is {cinemachineCameraPos.position.ToString()}");
+
+        
+
+
+
+        //canvasAnimator.SetBool("StartFadeIn", false);
+        //canvasAnimator.SetBool("StartFadeOut", true);
 
         
 
@@ -46,6 +66,14 @@ public class FadeCameraTransition : MonoBehaviour
 
     }
 
+    private void PlayerWalkOffScreen()
+    {
+        Rigidbody2D playerRigidbody = player.GetComponent<Rigidbody2D>();
+        Vector2 moveDirection = playerRigidbody.position - fadeTransitionColliders.walkOffScreenTargetPos.normalized;
+        Vector2 movement = moveDirection * playerMoveSpeedInTransition * Time.fixedDeltaTime;
+        playerRigidbody.position += movement;
+
+    }
     
 
     /* When InTransition Bool is True start Coroutine

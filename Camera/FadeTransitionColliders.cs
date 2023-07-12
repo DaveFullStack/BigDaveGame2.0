@@ -8,6 +8,7 @@ public class FadeTransitionColliders : MonoBehaviour
     //public GameObject canvasToSetActive;
 
     public Vector3 cinemachineTargetPosition;
+    public Vector2 walkOffScreenTargetPos;
 
 
     private void Start()
