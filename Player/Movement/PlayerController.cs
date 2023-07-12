@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     // Using public float so user can change in the inspector to test different moveSpeeds etc.
 
     private Rigidbody2D _rb;
-    private Vector2 moveDirection;
+    public Vector2 moveDirection;
     private Animator animator;
     private bool isMoving;
 
