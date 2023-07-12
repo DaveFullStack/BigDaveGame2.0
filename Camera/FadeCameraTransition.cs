@@ -19,6 +19,9 @@ public class FadeCameraTransition : MonoBehaviour
     private GameObject player;
     private Animator playerAnimator;
 
+    public Vector3 cinemachineTargetPos;
+    public Vector2 playerSpawnPosition;
+
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -57,10 +60,10 @@ public class FadeCameraTransition : MonoBehaviour
         yield return new WaitForSeconds(canvasAnimator.GetCurrentAnimatorStateInfo(0).length);
 
         Debug.Log($"Cinemachine Transform before movement is {cinemachineCameraPos.position.ToString()}");
-        cinemachineCameraPos.position = fadeTransitionColliders.cinemachineTargetPosition;
+        cinemachineCameraPos.position = cinemachineTargetPos;
         Debug.Log($"Cinemachine Transform position after movement is {cinemachineCameraPos.position.ToString()}");
 
-        player.GetComponent<Rigidbody2D>().position = fadeTransitionColliders.playerSpawnPosition;
+        player.GetComponent<Rigidbody2D>().position = playerSpawnPosition;
 
         yield return new WaitForSeconds(0.5f);
         

@@ -25,6 +25,8 @@ public class FadeTransitionColliders : MonoBehaviour
             fadeCameraTransition.InTransition = true;
             //canvasToSetActive.SetActive(true);
             //Debug.Log($"inTransition bool is {fadeCameraTransition.InTransition}");
+            fadeCameraTransition.playerSpawnPosition = playerSpawnPosition;
+            fadeCameraTransition.cinemachineTargetPos = cinemachineTargetPosition;
         }
         
         else
