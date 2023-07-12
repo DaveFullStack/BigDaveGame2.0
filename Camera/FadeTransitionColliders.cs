@@ -5,7 +5,7 @@ using UnityEngine;
 public class FadeTransitionColliders : MonoBehaviour
 {
     private FadeCameraTransition fadeCameraTransition;
-    public GameObject canvasToSetActive;
+    //public GameObject canvasToSetActive;
 
     private void Start()
     {
@@ -17,7 +17,7 @@ public class FadeTransitionColliders : MonoBehaviour
         if (!fadeCameraTransition.InTransition)
         {
             fadeCameraTransition.InTransition = true;
-            canvasToSetActive.SetActive(true);
+            //canvasToSetActive.SetActive(true);
             Debug.Log($"inTransition bool is {fadeCameraTransition.InTransition}");
         }
         
